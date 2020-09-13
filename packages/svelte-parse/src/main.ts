@@ -43,6 +43,7 @@ import {
 	RE_COMMENT_END,
 	RE_END_TAG_START,
 	RE_ONLY_WHITESPACE,
+	TEX_BLOCK,
 } from './types_and_things';
 
 import {
@@ -145,6 +146,14 @@ export function parseNode(opts: ParseNodeOptions): Result | undefined {
 
 		// right at the start
 		if (current_state === void 0) {
+			if (TEX_BLOCK.test(value.substring(index))) {
+				if (current_state === State.IN_TEX_BLOCK) {
+					pop_state();
+				} else {
+					set_state(State.IN_TEX_BLOCK);
+				}
+			}
+
 			if (RE_BLOCK_BRANCH.test(value.substring(index))) {
 				if (generatePositions && node_stack.length)
 					//@ts-ignore
