@@ -643,7 +643,7 @@ expression('parses expressions containing slashes', () => {
 	});
 });
 
-expression('ignores inline tex expressions', () => {
+expression.only('ignores inline tex expressions', () => {
 	//@ts-ignore
 	const { parsed } = parseNode({
 		generatePositions: false,
@@ -657,7 +657,7 @@ expression('ignores inline tex expressions', () => {
 	});
 });
 
-expression('ignores inline tex expressions containing curlies', () => {
+expression.only('ignores inline tex expressions containing curlies', () => {
 	//@ts-ignore
 	const { parsed } = parseNode({
 		generatePositions: false,
