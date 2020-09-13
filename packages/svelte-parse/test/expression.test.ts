@@ -643,4 +643,32 @@ expression('parses expressions containing slashes', () => {
 	});
 });
 
+expression('ignores inline tex expressions', () => {
+	//@ts-ignore
+	const { parsed } = parseNode({
+		generatePositions: false,
+		childParser,
+		value: '$$x$$',
+	});
+
+	assert.equal(parsed, {
+		type: 'text',
+		value: '$$x$$',
+	});
+});
+
+expression('ignores inline tex expressions containing curlies', () => {
+	//@ts-ignore
+	const { parsed } = parseNode({
+		generatePositions: false,
+		childParser,
+		value: '$$\\sqrt{x}$$',
+	});
+
+	assert.equal(parsed, {
+		type: 'text',
+		value: '$$\\sqrt{x}$$',
+	});
+});
+
 expression.run();
