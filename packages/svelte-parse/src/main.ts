@@ -151,6 +151,16 @@ export function parseNode(opts: ParseNodeOptions): Result | undefined {
 					pop_state();
 				} else {
 					set_state(State.IN_TEX_BLOCK);
+
+					_n = {
+						type: 'text',
+						value: '',
+					};
+
+					push_node(_n);
+					if (generatePositions)
+						//@ts-ignore
+						_n.position = { start: place(), end: {} };
 				}
 			}
 
@@ -1056,8 +1066,14 @@ export function parseNode(opts: ParseNodeOptions): Result | undefined {
 			continue;
 		}
 
-		if (current_state === State.IN_TEXT) {
-			if (char === OPEN_ANGLE_BRACKET || char === OPEN_BRACE) {
+		if (
+			current_state === State.IN_TEXT ||
+			current_state === State.IN_TEX_BLOCK
+		) {
+			if (
+				char === OPEN_ANGLE_BRACKET ||
+				(char === OPEN_BRACE && current_state !== State.IN_TEX_BLOCK)
+			) {
 				if (generatePositions)
 					//@ts-ignore
 					current_node.position.end = place();
