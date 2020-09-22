@@ -26,6 +26,18 @@ mdsvex_it('it should work', async () => {
 	assert.equal(output && output && lines(output.code), lines(`<h1>hello</h1>`));
 });
 
+mdsvex_it('it should accept a tex block', async () => {
+	const output = await mdsvex().markup({
+		content: `$$\\sqrt{a}$$`,
+		filename: 'file.svx',
+	});
+
+	assert.equal(
+		output && output && lines(output.code),
+		lines(`<p>\sqrt{a}</p>`)
+	);
+});
+
 mdsvex_it('it should accept a remark plugin', async () => {
 	const output = await mdsvex({ remarkPlugins: [containers] }).markup({
 		content: `
